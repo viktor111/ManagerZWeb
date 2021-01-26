@@ -1,0 +1,42 @@
+﻿@model WEBManagerZ.ViewModels.CartPageViewModel
+@{
+
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full price: @Model.CartPrice
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Amount of products: @Model.CartQuantity
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var pvm in Model.CartItemViewModels)
+     {
+        <tbody>
+
+            <tr>
+                <th>
+                    @pvm.Name
+                </th>
+                <th>
+                    @pvm.Price
+                </th>
+                <th>
+                    @pvm.Quantity
+                </th>
+                <th>
+                    <a class="nav-link text-dark" asp-action="DeleteItem" asp-route-id="@pvm.Id">Delete</a>
+                </th>
+            </tr>
+            
+        </tbody>
+     }
+</table>
+
+<a class="nav-link text-dark" asp-controller="Order" asp-action="CreateOrder">Finalize Order</a>
