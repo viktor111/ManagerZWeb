@@ -39,11 +39,11 @@ namespace WEBManagerZ.Controllers
 
             cartPageViewModel.CartItemViewModels = cartViewModels;
 
-            decimal sumOfPrice = cartViewModels.Sum(p => p.Price);
+            //decimal sumOfPrice = cartViewModels.Sum(p => p.Price);
 
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
 
-            cartPageViewModel.CartPrice = sumOfPrice;
+            cartPageViewModel.CartPrice = cart.Price;
 
             cartPageViewModel.CartQuantity = sumOfQuantity;
             
@@ -58,7 +58,8 @@ namespace WEBManagerZ.Controllers
             AppUser user = await _userManager.GetUserAsync(User);
             Cart cart = _sqlCart.GetCart(user);
 
-            _sqlCart.DeleteProductFromCart(id);
+            var product =_sqlProduct.GetProduct(id);
+            _sqlCart.DeleteProductFromCart(product, cart);
 
             return RedirectToAction(nameof(cart));
         }

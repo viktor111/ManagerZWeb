@@ -233,6 +233,9 @@ namespace WEBManagerZ.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,3)");
+
                     b.Property<int>("ProductCount")
                         .HasColumnType("int");
 

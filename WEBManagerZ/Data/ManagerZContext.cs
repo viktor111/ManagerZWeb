@@ -95,6 +95,8 @@ namespace WEBManagerZ.Data
                 entity.HasOne(e => e.User)
                 .WithOne(e => e.Cart)
                 .HasForeignKey<AppUser>(e => e.CartId);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 3)");
             });
 
             modelBuilder.Entity<CartProduct>()

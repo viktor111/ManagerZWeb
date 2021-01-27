@@ -36,6 +36,10 @@ namespace WEBManagerZ.Services
                 productDb.CartProduct.Add(new CartProduct { CartId = cart.Id });
             }
 
+            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+
+            dbCart.Price += product.FinalPrice;
+
             //_dbContexet.Update(product) if you are using QueryTrackingBehavior.NoTracking
             _dbContexet.SaveChanges();
             return cart;
@@ -85,9 +89,9 @@ namespace WEBManagerZ.Services
             return viewModels;
         }
 
-        public CartProduct DeleteProductFromCart(int productId)
+        public CartProduct DeleteProductFromCart(Product product, Cart cart)
         {
-            CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == productId).FirstOrDefault();
+            CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == product.Id).FirstOrDefault();
 
             if(p.Quantity == 1)
             {
@@ -99,6 +103,11 @@ namespace WEBManagerZ.Services
             {
                 p.Quantity = p.Quantity - 1;
             }
+
+            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+
+            dbCart.Price -= product.FinalPrice;
+
             _dbContexet.SaveChanges();
 
             return p;

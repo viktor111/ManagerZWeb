@@ -11,6 +11,8 @@ namespace WEBManagerZ.Models
 
         public int ProductCount { get; set; }
 
+        public decimal Price { get; set; }
+
         public AppUser User { get; set; }
 
         public List<CartProduct> CartProduct { get; set; }
