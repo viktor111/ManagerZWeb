@@ -73,6 +73,8 @@ namespace WEBManagerZ.Data
             {
                 entity.HasIndex(e => e.OrderId, "IX_Products_OrderId");
 
+                entity.Property(e => e.Picture).HasColumnType("varchar(max)");
+
                 entity.Property(e => e.Category)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -127,6 +129,6 @@ namespace WEBManagerZ.Data
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-        public DbSet<WEBManagerZ.ViewModels.OrderViewModel> OrderViewModel { get; set; }
+        //public DbSet<WEBManagerZ.ViewModels.OrderViewModel> OrderViewModel { get; set; }
     }
 }

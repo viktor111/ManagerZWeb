@@ -33,8 +33,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FinalPrice)
             </td>
-            <td>               
+            <td>
+                <img src="~/images/@item.Picture" />
+            </td>
+            <td>
                 <a asp-action="AddToCart" asp-route-id="@item.Id">AddToCart</a>
+            </td>
+            <td>
+                <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
             </td>
         </tr>
 }

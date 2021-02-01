@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WEBManagerZ.Models;
 using WEBManagerZ.Services;
+using WEBManagerZ.ViewModels;
 
 namespace WEBManagerZ.Controllers
 {
@@ -15,15 +18,18 @@ namespace WEBManagerZ.Controllers
         private SqlProduct _sqlProduct;
         private SqlCart _sqlCart;
         private UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductController(SqlProduct sqlProduct, 
             SqlCart sqlCart,
-            UserManager<AppUser> userManager
+            UserManager<AppUser> userManager,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             _sqlProduct = sqlProduct;
             _sqlCart = sqlCart;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -46,6 +52,44 @@ namespace WEBManagerZ.Controllers
             _sqlCart.AddProductToCart(product, cart);
 
             return RedirectToAction(nameof(GetAllProducts));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddPicture(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPicture(ProductViewModel model)
+        {
+            string uniqueFileName = UploadedFile(model);
+
+            Product product = new Product();
+
+            product.Id = model.Id;
+            product.Picture = uniqueFileName;
+
+            _sqlProduct.UpdatePicture(product);
+
+            return RedirectToAction(nameof(GetAllProducts));
+        }
+
+        public string UploadedFile(ProductViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.Picture != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Picture.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Picture.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

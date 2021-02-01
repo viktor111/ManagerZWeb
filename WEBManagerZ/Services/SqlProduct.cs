@@ -25,5 +25,16 @@ namespace WEBManagerZ.Services
         {
             return _dbContexet.Products.OrderBy(p => p.Name).ToList();
         }
+
+        public Product UpdatePicture(Product productModel)
+        {
+            Product product = _dbContexet.Products.Where(p => p.Id == productModel.Id).FirstOrDefault();
+
+            product.Picture = productModel.Picture;
+
+            _dbContexet.SaveChanges();
+
+            return new Product();
+        }
     }
 }
