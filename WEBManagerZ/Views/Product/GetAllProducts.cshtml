@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "GetAllProducts";
 }
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 <h1>GetAllProducts</h1>
 
 <table class="table">
@@ -22,27 +24,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalPrice)
-            </td>
-            <td>
-                <img src="~/images/@item.Picture" />
-            </td>
-            <td>
-                <a asp-action="AddToCart" asp-route-id="@item.Id">AddToCart</a>
-            </td>
-            <td>
-                <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinalPrice)
+                </td>
+                <td>
+                    <img src="~/images/@item.Picture" />
+                </td>
+                <td>
+                    <a asp-action="AddToCart" asp-route-id="@item.Id">AddToCart</a>
+                </td>
+                @if (this.User.IsInRole("Admin"))
+                {
+                  <td>
+                    <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
+                  </td>
+                }
+                
+            </tr>
+        }
     </tbody>
 </table>

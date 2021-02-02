@@ -63,5 +63,15 @@ namespace WEBManagerZ.Controllers
 
             return RedirectToAction(nameof(cart));
         }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            AppUser user = await _userManager.GetUserAsync(User);
+            Cart cart = _sqlCart.GetCart(user);
+
+            _sqlCart.ClearCart(cart);
+
+            return RedirectToAction(nameof(cart));
+        }
     }
 }

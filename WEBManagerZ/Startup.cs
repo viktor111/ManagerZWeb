@@ -19,6 +19,8 @@ namespace WEBManagerZ
 {
     public class Startup
     {
+        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,15 +41,17 @@ namespace WEBManagerZ
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ManagerZContext>();
             services.AddControllersWithViews();
             services.AddScoped<SqlProduct>();
             services.AddScoped<SqlCart>();
             services.AddScoped<SqlOrder>();
         }
+   
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -68,6 +72,8 @@ namespace WEBManagerZ
             app.UseAuthentication();
             app.UseAuthorization();
 
+            CreateRoles(serviceProvider).Wait();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -75,6 +81,43 @@ namespace WEBManagerZ
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            var SqlCart = serviceProvider.GetRequiredService<SqlCart>();
+
+            string adminRole = "Admin";
+
+            var roleExist = await RoleManager.RoleExistsAsync(adminRole);
+
+            if (!roleExist)
+            {
+                await RoleManager.CreateAsync(new IdentityRole(adminRole));
+            }
+
+            var poweruser = new AppUser
+            {
+                UserName = "dragataAdminWorker",
+                Email = "swifrorlilko@gmail.com",
+            };
+
+            string userPWD = "adminworker434";
+
+            var _user = await UserManager.FindByEmailAsync("swifrorlilko@gmail.com");
+
+            if (_user == null)
+            {
+                SqlCart.CreateCart(poweruser);
+                var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD);
+               
+                if (createPowerUser.Succeeded)
+                {
+                    await UserManager.AddToRoleAsync(poweruser, adminRole);
+                }
+            }
         }
     }
 }

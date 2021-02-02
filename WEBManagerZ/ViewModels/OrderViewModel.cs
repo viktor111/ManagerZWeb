@@ -17,6 +17,11 @@ namespace WEBManagerZ.ViewModels
         [Phone]
         public string PhoneNumber { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date for delivery")]
+        public DateTime Date { get; set; }
+        
         public string Notes { get; set; }
     }
 }

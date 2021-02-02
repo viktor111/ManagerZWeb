@@ -75,13 +75,15 @@ namespace WEBManagerZ.Controllers
             order.Address = orderViewModel.Adress;
             order.Note = orderViewModel.Notes;
             order.Status = "Sent";
-            order.Date = DateTime.Now;
-            order.Cost = sumOfPrice;
+            order.Date = orderViewModel.Date;
+            order.Cost = cart.Price;
             order.ProductCount = sumOfQuantity;
             order.ProductIds = string.Join(",", ids);
             order.ProductNames = string.Join(", ", namesAndQuantity);
 
             _sqlOrder.SaveOrder(order);
+
+            _sqlCart.ClearCart(cart);
 
             return RedirectToAction("Cart", "Cart");
         }

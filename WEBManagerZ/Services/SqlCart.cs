@@ -65,6 +65,20 @@ namespace WEBManagerZ.Services
             return _dbContexet.Carts.Where(p => p.Id == cart.Id).SelectMany(p => p.CartProduct).Select(p => p.Product).ToList();
         }
 
+        public Cart ClearCart(Cart cart)
+        {
+            var cartProduct = _dbContexet.CartProduct.Where(x => x.CartId == cart.Id).ToList();
+            var cartSql = _dbContexet.Carts.Where(c => c.Id == cart.Id).FirstOrDefault();
+
+            cartSql.Price = 0;
+
+            _dbContexet.CartProduct.RemoveRange(cartProduct);
+
+            _dbContexet.SaveChanges();
+
+            return new Cart();
+        }
+
         public List<CartItemViewModel> GetProductsVM(Cart cart)
         {
             List<CartItemViewModel> viewModels = new List<CartItemViewModel>();
