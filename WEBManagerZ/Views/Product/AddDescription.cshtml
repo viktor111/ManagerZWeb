@@ -1,0 +1,12 @@
+﻿@model WEBManagerZ.ViewModels.ProductDescriptionViewModel
+    <form enctype="multipart/form-data" asp-action="AddDescription">
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <input asp-for="Description">
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
+        </div>
+    </form>

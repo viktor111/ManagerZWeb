@@ -36,5 +36,16 @@ namespace WEBManagerZ.Services
 
             return new Product();
         }
+
+        public Product UpdateDescription(Product productModel)
+        {
+            Product product = _dbContexet.Products.Where(p => p.Id == productModel.Id).FirstOrDefault();
+
+            product.Description = productModel.Description;
+
+            _dbContexet.SaveChanges();
+
+            return new Product();
+        }
     }
 }

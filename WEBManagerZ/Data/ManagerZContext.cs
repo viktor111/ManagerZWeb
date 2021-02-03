@@ -75,6 +75,8 @@ namespace WEBManagerZ.Data
 
                 entity.Property(e => e.Picture).HasColumnType("varchar(max)");
 
+                entity.Property(e => e.Description).HasColumnType("varchar(100)");
+
                 entity.Property(e => e.Category)
                     .IsRequired()
                     .HasMaxLength(50)

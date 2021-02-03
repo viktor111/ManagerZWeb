@@ -15,6 +15,7 @@ namespace WEBManagerZ.Models
         public decimal FinalPrice { get; set; }
         public int? OrderId { get; set; }
         public string Picture { get; set; }
+        public string Description { get; set; }
 
         public virtual Order Order { get; set; }
         public List<CartProduct> CartProduct { get; set; }

@@ -26,30 +26,36 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalPrice)
+            </td>
+            <td>
+                <img src="~/images/@item.Picture" />
+            </td>
+            <td>
+                <p>@item.Description</p>
+            </td>
+            <td>
+                <a asp-action="AddToCart" asp-route-id="@item.Id">AddToCart</a>
+            </td>
+            @if (this.User.IsInRole("Admin"))
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FinalPrice)
-                </td>
-                <td>
-                    <img src="~/images/@item.Picture" />
-                </td>
-                <td>
-                    <a asp-action="AddToCart" asp-route-id="@item.Id">AddToCart</a>
-                </td>
-                @if (this.User.IsInRole("Admin"))
-                {
-                  <td>
                     <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
-                  </td>
-                }
-                
-            </tr>
+                </td>
+                <td>
+                    <a asp-action="AddDescription" asp-route-id="@item.Id">Add Description</a>
+                </td>
+            }
+
+        </tr>
         }
     </tbody>
 </table>
