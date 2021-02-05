@@ -56,6 +56,12 @@ namespace WEBManagerZ.Services
         public Cart GetCart(AppUser user)
         {
             Cart cart = _dbContexet.Carts.Where(c => c.User == user).FirstOrDefault();
+            if(cart.Price < 0)
+            {
+                cart.Price = 0;
+            }
+
+            _dbContexet.SaveChanges();
 
             return cart;
         }

@@ -1,12 +1,28 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using WEBManagerZ.ViewModels
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@inject SqlCart SqlCart
+
+@{
+    int sumOfQuantity;
+    try {
+        AppUser user = await UserManager.GetUserAsync(User);
+        Cart cart = SqlCart.GetCart(user);
+        List<CartItemViewModel> cartViewModels = SqlCart.GetProductsVM(cart);
+        sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
+    }
+    catch
+    {
+        sumOfQuantity = 0;
+    }
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Cart" title="Manage">Cart</a>
+            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Cart" title="Manage"><i class="bi bi-cart">@sumOfQuantity</i></a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
@@ -27,3 +43,5 @@
         </li>
     }
 </ul>
+
+
