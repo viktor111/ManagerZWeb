@@ -3,50 +3,70 @@
 
 }
 
-<a class="nav-link text-dark" asp-action="ClearCart">Clear Cart</a>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Full price: @Model.CartPrice
-            </th>
-        </tr>
-        <tr>
-            <th>
-                Amount of products: @Model.CartQuantity
-            </th>
-        </tr>
-    </thead>
+<div class="container">
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+            <div class="text-center col-sm-12 col-md-12 col-lg-12">
+                <h2>Your Cart</h2>
+            </div>
 
-    @foreach (var pvm in Model.CartItemViewModels)
-    {
-        <tbody>
+            <div class="text-center col-sm-12 col-md-12 col-lg-12">
+                <p>
+                    Price: @Model.CartPrice
+                </p>
+                <p>
+                    Quantity: @Model.CartQuantity
+                </p>
+            </div>
+            <div class="text-center col-sm-12 col-md-6 col-lg-6">
+                <a class="btn btn-danger nav-link text-dark" asp-action="ClearCart">Clear Cart</a>
+            </div>
+            <div class="text-center col-sm-12 col-md-6 col-lg-6">
+                @if (Model.CartQuantity == 0)
+                {
+                    <p>Cart empty!</p>
+                }
+                else
+                {
+                    <a class="btn btn-light nav-link text-dark" asp-controller="Order" asp-action="CreateOrder">Finalize Order</a>
+                }
+            </div>
+        </div>
+    </div>
 
-            <tr>
-                <th>
-                    @pvm.Name
-                </th>
-                <th>
-                    @pvm.Price
-                </th>
-                <th>
-                    @pvm.Quantity
-                </th>
-                <th>
-                    <a class="nav-link text-dark" asp-action="DeleteItem" asp-route-id="@pvm.Id">Delete</a>
-                </th>
-            </tr>
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <table class="table">
+            @foreach (var pvm in Model.CartItemViewModels)
+            {
+                <tbody>
 
-        </tbody>
-    }
-</table>
+                    <tr>
+                        <th>
+                            @pvm.Name
+                        </th>
+                        <th>
+                            @pvm.Price
+                        </th>
+                        <th>
+                            @pvm.Quantity
+                        </th>
+                        <th>
+                            <a class="nav-link text-dark" asp-action="AddQuantity" asp-route-id="@pvm.Id"><i class="bi bi-plus-square"></i></a>
+                        </th>
+                        <th>
+                            <a class="nav-link text-dark" asp-action="DeleteItem" asp-route-id="@pvm.Id"><i class="bi bi-trash"></i></a>
+                        </th>
 
-@if (Model.CartQuantity == 0)
-{
-    <p>Cart empty!</p>
-}
-else
-{
-    <a class="nav-link text-dark" asp-controller="Order" asp-action="CreateOrder">Finalize Order</a>
-}
+                    </tr>
+
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+
+
+
+
+

@@ -114,6 +114,22 @@ namespace WEBManagerZ.Services
             return viewModels;
         }
 
+        public CartProduct AddQuantity(Product product, Cart cart)
+        {
+            CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == product.Id).FirstOrDefault();
+
+            p.Quantity += 1;
+
+            
+            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+
+            dbCart.Price += product.FinalPrice;
+
+            _dbContexet.SaveChanges();
+
+            return p;
+        }
+
         public CartProduct DeleteProductFromCart(Product product, Cart cart)
         {
             CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == product.Id).FirstOrDefault();

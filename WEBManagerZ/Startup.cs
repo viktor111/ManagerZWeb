@@ -35,7 +35,8 @@ namespace WEBManagerZ
                 options.UseSqlServer(
                     Configuration.GetConnectionString("AdminConStr")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
             services.AddDefaultIdentity<AppUser>(options => {
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;

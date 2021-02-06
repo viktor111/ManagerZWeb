@@ -64,6 +64,18 @@ namespace WEBManagerZ.Controllers
             return RedirectToAction(nameof(cart));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AddQuantity(int id)
+        {
+            AppUser user = await _userManager.GetUserAsync(User);
+            Cart cart = _sqlCart.GetCart(user);
+
+            var product = _sqlProduct.GetProduct(id);
+            _sqlCart.AddQuantity(product, cart);
+
+            return RedirectToAction(nameof(cart));
+        }
+
         public async Task<IActionResult> ClearCart()
         {
             AppUser user = await _userManager.GetUserAsync(User);
