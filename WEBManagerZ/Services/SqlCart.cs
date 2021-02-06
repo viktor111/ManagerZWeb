@@ -56,10 +56,14 @@ namespace WEBManagerZ.Services
         public Cart GetCart(AppUser user)
         {
             Cart cart = _dbContexet.Carts.Where(c => c.User == user).FirstOrDefault();
-            if(cart.Price < 0)
+            if(user != null)
             {
-                cart.Price = 0;
+                if (cart.Price < 0)
+                {
+                    cart.Price = 0;
+                }
             }
+            
 
             _dbContexet.SaveChanges();
 
@@ -102,6 +106,7 @@ namespace WEBManagerZ.Services
                 cvm.Price = product.FinalPrice;
                 cvm.Quantity = quantity;
                 cvm.Name = product.Name;
+                cvm.CostToMake = product.CostToMake;
                 cvm.Id = product.Id;
 
                 viewModels.Add(cvm);

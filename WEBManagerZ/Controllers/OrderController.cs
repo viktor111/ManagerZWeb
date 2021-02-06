@@ -66,6 +66,7 @@ namespace WEBManagerZ.Controllers
             }
 
             decimal sumOfPrice = cartViewModels.Sum(p => p.Price);
+            decimal sumOfSpent = cartViewModels.Sum(p => p.CostToMake);
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
 
             Order order = new Order();
@@ -79,6 +80,7 @@ namespace WEBManagerZ.Controllers
             order.Cost = cart.Price;
             order.ProductCount = sumOfQuantity;
             order.ProductIds = string.Join(",", ids);
+            order.Spent = sumOfSpent;
             order.ProductNames = string.Join(", ", namesAndQuantity);
 
             _sqlOrder.SaveOrder(order);

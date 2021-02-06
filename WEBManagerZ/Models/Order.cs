@@ -21,6 +21,8 @@ namespace WEBManagerZ.Models
 
         public decimal Cost { get; set; }
 
+        public decimal Spent { get; set; }
+
         public int ProductCount { get; set; }
 
         public string ProductIds { get; set; }
