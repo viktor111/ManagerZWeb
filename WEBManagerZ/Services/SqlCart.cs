@@ -9,7 +9,7 @@ using WEBManagerZ.ViewModels;
 
 namespace WEBManagerZ.Services
 {
-    public class SqlCart : ISqlCart
+    public class SqlCart
     {
         private ManagerZContext _dbContexet;
 

@@ -2,7 +2,11 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "DefaultConnection"
+      "connectionId": "IpConStr"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "AdminConStr"
     }
   }
 }

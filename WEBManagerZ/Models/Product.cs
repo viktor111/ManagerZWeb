@@ -19,5 +19,7 @@ namespace WEBManagerZ.Models
 
         public virtual Order Order { get; set; }
         public List<CartProduct> CartProduct { get; set; }
+        public Discount Discount { get; set; }
+        public int? DiscountId { get; set; }
     }
 }

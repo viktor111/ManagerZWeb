@@ -7,7 +7,7 @@ using WEBManagerZ.Models;
 
 namespace WEBManagerZ.Services
 {
-    public class SqlProduct : ISqlProduct
+    public class SqlProduct
     {
         private ManagerZContext _dbContexet;
 

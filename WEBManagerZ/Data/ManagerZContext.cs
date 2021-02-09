@@ -32,6 +32,8 @@ namespace WEBManagerZ.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            
+
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
 
             modelBuilder.Entity<Day>(entity =>
@@ -67,6 +69,7 @@ namespace WEBManagerZ.Data
                 entity.Property(e => e.Address).HasMaxLength(150);
 
                 entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -92,6 +95,9 @@ namespace WEBManagerZ.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 3)");
+
+                //entity.Property(e => e.DiscountId).HasDefaultValue(0);
+
             });
 
             modelBuilder.Entity<Cart>(entity => {
@@ -116,10 +122,15 @@ namespace WEBManagerZ.Data
             .WithMany(t => t.CartProduct)
             .HasForeignKey(t => t.ProductId);
 
+            modelBuilder.Entity<Product>()
+                .HasOne(d => d.Discount)
+                .WithMany(p => p.Products)
+                .HasForeignKey(f => f.DiscountId);
+
             modelBuilder.Entity<CartProduct>().Property("Quantity").HasDefaultValue(1);
 
             modelBuilder.Entity<Order>(entity => entity.Property(e => e.Cost).HasColumnType("decimal(18, 3)"));
-
+            modelBuilder.Entity<Discount>(entity => entity.Property(e => e.Percent).HasColumnType("decimal(18, 3)"));
             OnModelCreatingPartial(modelBuilder);
         }
 
@@ -128,8 +139,11 @@ namespace WEBManagerZ.Data
         public DbSet<Product> Products { get; set; }        
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProduct { get; set; }
+        public DbSet<Discount> Discount { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        
 
         //public DbSet<WEBManagerZ.ViewModels.OrderViewModel> OrderViewModel { get; set; }
     }

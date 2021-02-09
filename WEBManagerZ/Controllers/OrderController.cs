@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using WEBManagerZ.Models;
 using WEBManagerZ.Services;
@@ -42,8 +43,8 @@ namespace WEBManagerZ.Controllers
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
 
             ViewData["ProuctSumPrice"] = sumOfPrice;
-            ViewData["ProductCount"] = sumOfQuantity;
-
+            ViewData["ProductCount"] = sumOfQuantity;            
+            ViewData["ProductCount"] = sumOfQuantity;            
 
             return View();
         }

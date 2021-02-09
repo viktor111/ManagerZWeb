@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBManagerZ.Data;
 
 namespace WEBManagerZ.Migrations
 {
     [DbContext(typeof(ManagerZContext))]
-    partial class ManagerZContextModelSnapshot : ModelSnapshot
+    [Migration("20210209020710_UpdateForeignKeyProductDiscount")]
+    partial class UpdateForeignKeyProductDiscount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -397,8 +399,10 @@ namespace WEBManagerZ.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("DiscountId")
-                        .HasColumnType("int");
+                    b.Property<int>("DiscountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("FinalPrice")
                         .HasColumnType("decimal(18,3)");
@@ -512,7 +516,9 @@ namespace WEBManagerZ.Migrations
                 {
                     b.HasOne("WEBManagerZ.Models.Discount", "Discount")
                         .WithMany("Products")
-                        .HasForeignKey("DiscountId");
+                        .HasForeignKey("DiscountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WEBManagerZ.Models.Order", "Order")
                         .WithMany()

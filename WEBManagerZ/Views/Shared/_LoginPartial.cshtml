@@ -21,6 +21,12 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        @if (this.User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" style="color: gold" asp-controller="Admin" asp-action="Index" title="Manage">Admin</a>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Cart" asp-action="Cart" title="Manage"><i class="bi bi-cart">@sumOfQuantity</i></a>
         </li>

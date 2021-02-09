@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "CreateOrder";
 }
-
 <div class=" container">
     <div class="shadow p-3 mb-5 bg-white rounded">
         <div class="row">
@@ -49,7 +48,7 @@
                     <span asp-validation-for="Notes" class="text-danger"></span>
                 </div>
                 <div class="text-center form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
 

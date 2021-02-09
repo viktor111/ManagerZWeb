@@ -1,0 +1,9 @@
+﻿@model WEBManagerZ.ViewModels.DiscountAddProductViewModel
+@{
+}
+
+<form asp-action="AddProductToDiscount" asp-controller="Admin">
+    <select asp-for="ProductName" asp-items="Model.ProductsName"></select>
+    <select asp-for="DiscountName" asp-items="Model.DiscountsName"></select>
+    <input type="submit" value="Add" />
+</form>

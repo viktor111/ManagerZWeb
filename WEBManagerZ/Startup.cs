@@ -33,10 +33,12 @@ namespace WEBManagerZ
         {
             services.AddDbContext<ManagerZContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("AdminConStr")));
+                    Configuration.GetConnectionString("AdminConstr")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddRazorPages()
-                .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
+
             services.AddDefaultIdentity<AppUser>(options => {
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;
@@ -44,10 +46,13 @@ namespace WEBManagerZ
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ManagerZContext>();
+
             services.AddControllersWithViews();
+
             services.AddScoped<SqlProduct>();
             services.AddScoped<SqlCart>();
             services.AddScoped<SqlOrder>();
+            services.AddScoped<SqlDiscount>();
         }
    
 
@@ -65,6 +70,9 @@ namespace WEBManagerZ
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseDeveloperExceptionPage();
+
+            app.UseHttpsRedirection();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -73,7 +81,7 @@ namespace WEBManagerZ
             app.UseAuthentication();
             app.UseAuthorization();
 
-            CreateRoles(serviceProvider).Wait();
+            //CreateRoles(serviceProvider).Wait();
 
             app.UseEndpoints(endpoints =>
             {
@@ -84,41 +92,41 @@ namespace WEBManagerZ
             });
         }
 
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-            var SqlCart = serviceProvider.GetRequiredService<SqlCart>();
+        //private async Task CreateRoles(IServiceProvider serviceProvider)
+        //{
+        //    var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        //    var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+        //    var SqlCart = serviceProvider.GetRequiredService<SqlCart>();
 
-            string adminRole = "Admin";
+        //    string adminRole = "Admin";
 
-            var roleExist = await RoleManager.RoleExistsAsync(adminRole);
+        //    var roleExist = await RoleManager.RoleExistsAsync(adminRole);
 
-            if (!roleExist)
-            {
-                await RoleManager.CreateAsync(new IdentityRole(adminRole));
-            }
+        //    if (!roleExist)
+        //    {
+        //        await RoleManager.CreateAsync(new IdentityRole(adminRole));
+        //    }
 
-            var poweruser = new AppUser
-            {
-                UserName = "dragataAdminWorker",
-                Email = "swifrorlilko@gmail.com",
-            };
+        //    var poweruser = new AppUser
+        //    {
+        //        UserName = "dragataAdminWorker",
+        //        Email = "swifrorlilko@gmail.com",
+        //    };
 
-            string userPWD = "adminworker434";
+        //    string userPWD = "adminworker434";
 
-            var _user = await UserManager.FindByEmailAsync("swifrorlilko@gmail.com");
+        //    var _user = await UserManager.FindByEmailAsync("swifrorlilko@gmail.com");
 
-            if (_user == null)
-            {
-                SqlCart.CreateCart(poweruser);
-                var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD);
+        //    if (_user == null)
+        //    {
+        //        SqlCart.CreateCart(poweruser);
+        //        var createPowerUser = await UserManager.CreateAsync(poweruser, userPWD);
                
-                if (createPowerUser.Succeeded)
-                {
-                    await UserManager.AddToRoleAsync(poweruser, adminRole);
-                }
-            }
-        }
+        //        if (createPowerUser.Succeeded)
+        //        {
+        //            await UserManager.AddToRoleAsync(poweruser, adminRole);
+        //        }
+        //    }
+        //}
     }
 }

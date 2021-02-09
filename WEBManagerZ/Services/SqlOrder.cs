@@ -7,7 +7,7 @@ using WEBManagerZ.Models;
 
 namespace WEBManagerZ.Services
 {
-    public class SqlOrder : ISqlOrder
+    public class SqlOrder
     {
         private ManagerZContext _dbContexet;
 
