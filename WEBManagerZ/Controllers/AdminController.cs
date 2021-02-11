@@ -76,5 +76,36 @@ namespace WEBManagerZ.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult DeleteDiscount(int id)
+        {
+            _sqlDiscount.DeleteOne(id);
+
+            return RedirectToAction(nameof(ListDiscounts));
+        }
+
+        [HttpGet]
+        public IActionResult EditDiscount(int id)
+        {
+            Discount currentDiscount = _sqlDiscount.GetDiscount(id);
+
+            return View(currentDiscount);
+        }
+        [HttpPost]
+        public IActionResult EditDiscount(Discount model)
+        {
+            _sqlDiscount.EditDiscount(model);
+
+            return RedirectToAction(nameof(ListDiscounts));
+        }
+
+        [HttpGet]
+        public IActionResult DiscountProducts(int id)
+        {
+            List<Product> ps = _sqlDiscount.DiscountProducts(id);
+
+            return View(ps);
+        }
     }
 }

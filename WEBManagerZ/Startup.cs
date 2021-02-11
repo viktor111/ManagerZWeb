@@ -33,7 +33,7 @@ namespace WEBManagerZ
         {
             services.AddDbContext<ManagerZContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("AdminConstr")));
+                    Configuration.GetConnectionString("Ip")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

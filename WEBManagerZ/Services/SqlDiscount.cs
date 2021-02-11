@@ -35,6 +35,45 @@ namespace WEBManagerZ.Services
             return _dbContexet.Discount.Where(d => d.Id == id).FirstOrDefault();
         }
 
+        public Discount DeleteOne(int id)
+        {
+            Discount d = _dbContexet.Discount.Where(d => d.Id == id).FirstOrDefault();
+
+            _dbContexet.Discount.Remove(d);
+
+            List<Product> ps = _dbContexet.Products.Where(p => p.DiscountId == id).ToList();
+
+            foreach (var p in ps)
+            {
+                p.DiscountId = null;
+            }
+
+            _dbContexet.SaveChanges();
+
+            return new Discount();
+        }
+
+        public Discount EditDiscount(Discount newDiscount)
+        {
+            Discount discount = _dbContexet.Discount.Where(d => d.Id == newDiscount.Id).FirstOrDefault();
+
+            discount.Name = newDiscount.Name;
+            discount.Percent = newDiscount.Percent;
+            discount.Products = newDiscount.Products;
+            discount.StartDate = newDiscount.StartDate;
+            discount.EndDate = newDiscount.EndDate;
+            discount.Description = newDiscount.Description;
+
+            _dbContexet.SaveChanges();
+
+            return discount;
+        }
+
+        public List<Product> DiscountProducts(int id)
+        {
+            return  _dbContexet.Products.Where(p => p.DiscountId == id).ToList();            
+        }
+
         public Discount AddProductToDiscount(string dName, string pName)
         {
             Discount discount = _dbContexet.Discount.Where(d => d.Name == dName).FirstOrDefault();
