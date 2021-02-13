@@ -17,5 +17,11 @@ namespace WEBManagerZ.ViewModels
         public decimal CostToMake { get; set; }
 
         public int Quantity { get; set; }
+
+        public Discount Discount { get; set; }
+
+        public decimal PriceDiscounted { get; set; } = 0;
+
+        public bool DiscountExists { get; set; } = false;
     }
 }

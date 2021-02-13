@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBManagerZ.Data;
 
 namespace WEBManagerZ.Migrations
 {
     [DbContext(typeof(ManagerZContext))]
-    partial class ManagerZContextModelSnapshot : ModelSnapshot
+    [Migration("20210212155503_AddNews")]
+    partial class AddNews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,9 +339,6 @@ namespace WEBManagerZ.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
@@ -409,9 +408,6 @@ namespace WEBManagerZ.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("AddedToCart")
-                        .HasColumnType("int");
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -441,9 +437,6 @@ namespace WEBManagerZ.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,3)");
-
-                    b.Property<int>("TimesSold")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

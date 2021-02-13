@@ -29,7 +29,7 @@
                 }
                 else
                 {
-                    <a class="btn btn-light nav-link text-dark" asp-controller="Order" asp-action="CreateOrder">Finalize Order</a>
+                    <a class="btn btn-success nav-link text-dark" asp-controller="Order" asp-action="CreateOrder">Finalize Order</a>
                 }
             </div>
         </div>
@@ -45,6 +45,13 @@
                         <th>
                             @pvm.Name
                         </th>
+                        @if (pvm.DiscountExists)
+                        {
+                        <th>
+                        Discounted Price: <span class="text-info">@pvm.PriceDiscounted</span>
+                        
+                        </th>
+                        }
                         <th>
                             @pvm.Price
                         </th>

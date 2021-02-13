@@ -23,7 +23,25 @@ namespace WEBManagerZ.Services
 
         public List<Product> GetProducts()
         {
-            return _dbContexet.Products.OrderBy(p => p.Name).ToList();
+            List<Product> ps = _dbContexet.Products.OrderBy(p => p.Name).ToList();
+
+            List<Product> newPs = new();
+
+            foreach (var p in ps)
+            {
+                if (p.DiscountId is not null)
+                {
+                    Discount discount = _dbContexet.Discount.Where(d => d.Id == p.DiscountId).FirstOrDefault();
+
+                    decimal discountCalc = discount.Percent / 100;
+                    decimal discountedPriceProduct = p.FinalPrice - (discountCalc * p.FinalPrice);
+
+                    p.PriceDiscounted = discountedPriceProduct;
+                }
+                newPs.Add(p);
+            }
+
+            return newPs;
         }
 
         public Product UpdatePicture(Product productModel)

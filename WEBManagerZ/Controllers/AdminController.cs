@@ -12,7 +12,7 @@ using WEBManagerZ.ViewModels;
 
 namespace WEBManagerZ.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     public class AdminController : Controller
     {
         private SqlProduct _sqlProduct;
@@ -33,17 +33,20 @@ namespace WEBManagerZ.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateDiscount()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateDiscount(Discount discount)
         {
@@ -60,6 +63,7 @@ namespace WEBManagerZ.Controllers
             return View(discounts);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult AddProductToDiscount()
         {
@@ -69,22 +73,28 @@ namespace WEBManagerZ.Controllers
 
             return View(vm);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddProductToDiscount(DiscountAddProductViewModel viewModel)
         {
             _sqlDiscount.AddProductToDiscount(viewModel.DiscountName, viewModel.ProductName);
-
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult DeleteDiscount(int id)
+        public async Task<IActionResult> DeleteDiscount(int id)
         {
-            _sqlDiscount.DeleteOne(id);
+            AppUser user = await _userManager.GetUserAsync(User);
+            Cart cart = _sqlCart.GetCart(user);
+
+            _sqlDiscount.DeleteOne(id, cart);
 
             return RedirectToAction(nameof(ListDiscounts));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult EditDiscount(int id)
         {
@@ -92,6 +102,8 @@ namespace WEBManagerZ.Controllers
 
             return View(currentDiscount);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult EditDiscount(Discount model)
         {

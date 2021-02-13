@@ -1,0 +1,40 @@
+﻿
+@model WEBManagerZ.Models.News
+@{
+}
+
+@{
+}
+
+<form enctype="multipart/form-data" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="PictureFile" class="control-label"></label>
+        <div class="custom-file">
+            <input type="file" asp-for="PictureFile" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+        <span asp-validation-for="PictureFile" class="text-danger"></span>
+
+        <span asp-validation-for="Link" class="text-danger"></span>
+
+        <div class="form-group">
+            <label asp-for="Text" class="control-label"></label>
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="submit" class="btn btn-sm btn-primary rounded-0 text-uppercase" />
+    </div>
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+}

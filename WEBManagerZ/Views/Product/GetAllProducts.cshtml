@@ -2,45 +2,54 @@
 
 @{
     ViewData["Title"] = "GetAllProducts";
+    
+
 }
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
-<div class="row">
-    @foreach (var item in Model)    
+
+
+<div class="row" style="margin-top: 20px">
+    @foreach (var item in Model)
     {
-        <div class="card col-sm-1 col-md-3 co-lg-4 mx-3 shadow p-3 mb-5 bg-white rounded"  style="width: 18rem;">
-            <img width="100" height="170" class="shadow p-3 mb-5 bg-white rounded card-img-top" src="~/images/@item.Picture" />
-            <div class="card-body">
-                <h5 class="card-title">@item.Name</h5>
-                <p class="card-text">@item.Description</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Category: @item.Category</li>
-                <li class="list-group-item">Price: @item.Price</li>
-            </ul>
-            @if (SignInManager.IsSignedIn(User))
+
+    <div class="card col-sm-1 col-md-3 co-lg-4 mx-3 shadow p-3 mb-5 bg-white rounded" style="width: 18rem;">
+        <img width="100" height="170" class="shadow p-3 mb-5 bg-white rounded card-img-top" src="~/images/@item.Picture" />
+        <div class="card-body">
+            <h5 class="card-title">@item.Name</h5>
+            <p class="card-text">@item.Description</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Category: @item.Category</li>
+            <li class="list-group-item">Price: @item.FinalPrice</li>
+            @if (item.PriceDiscounted is not 0)
+                {
+            <li class="bg-danger list-group-item">Discounted Price: @item.PriceDiscounted</li>
+                }
+        </ul>
+        @if (SignInManager.IsSignedIn(User))
             {
-                <div class="card-body">
-                    <a asp-action="AddToCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus" style="font-size: 2rem; color: cornflowerblue;"></i></a>
-                </div>
+        <div class="card-body">
+            <a asp-action="AddToCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus" style="font-size: 2rem; color: cornflowerblue;"></i></a>
+        </div>
             }
             else
             {
-                <div class="card-body">
-                    <a aasp-area="Identity" asp-page="/Account/Login">Login to order</a>
-                </div>
-            }
-            @if (this.User.IsInRole("Admin"))
-            {
-                <div class="card-body">
-                    <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
-                    <a asp-action="AddDescription" asp-route-id="@item.Id">Add Description</a>
-                    <a asp-action="AddDiscount" asp-controller="Admin" asp-route-id="@item.Id">Add Discount</a>
-                </div>
-            }
+        <div class="card-body">
+            <a aasp-area="Identity" asp-page="/Account/Login">Login to order</a>
         </div>
+            }
+        @if (this.User.IsInRole("Admin"))
+            {
+        <div class="card-body">
+            <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
+            <a asp-action="AddDescription" asp-route-id="@item.Id">Add Description</a>
+            <a asp-action="AddDiscount" asp-controller="Admin" asp-route-id="@item.Id">Add Discount</a>
+        </div>
+            }
+    </div>
     }
 
 </div>

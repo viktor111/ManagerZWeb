@@ -53,6 +53,7 @@ namespace WEBManagerZ
             services.AddScoped<SqlCart>();
             services.AddScoped<SqlOrder>();
             services.AddScoped<SqlDiscount>();
+            services.AddScoped<SqlNews>();
         }
    
 

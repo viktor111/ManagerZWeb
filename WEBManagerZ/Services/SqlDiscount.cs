@@ -10,10 +10,12 @@ namespace WEBManagerZ.Services
     public class SqlDiscount
     {
         private ManagerZContext _dbContexet;
+        private SqlCart _sqlCart;
 
-        public SqlDiscount(ManagerZContext dbContext)
+        public SqlDiscount(ManagerZContext dbContext, SqlCart sqlCart)
         {
             _dbContexet = dbContext;
+            _sqlCart = sqlCart;
         }
 
         public Discount CreateDiscount(Discount discount)
@@ -35,8 +37,11 @@ namespace WEBManagerZ.Services
             return _dbContexet.Discount.Where(d => d.Id == id).FirstOrDefault();
         }
 
-        public Discount DeleteOne(int id)
+        public Discount DeleteOne(int id, Cart cart)
         {
+
+            _sqlCart.ClearCart(cart);
+                
             Discount d = _dbContexet.Discount.Where(d => d.Id == id).FirstOrDefault();
 
             _dbContexet.Discount.Remove(d);
@@ -71,12 +76,38 @@ namespace WEBManagerZ.Services
 
         public List<Product> DiscountProducts(int id)
         {
-            return  _dbContexet.Products.Where(p => p.DiscountId == id).ToList();            
+
+            List<Product> ps = _dbContexet.Products.Where(p => p.DiscountId == id).ToList();
+
+            List<Product> newPs = new();
+
+            foreach (var p in ps)
+            {
+                if (p.DiscountId is not null)
+                {
+                    Discount discount = _dbContexet.Discount.Where(d => d.Id == p.DiscountId).FirstOrDefault();
+
+                    decimal discountCalc = discount.Percent / 100;
+                    decimal discountedPriceProduct = p.FinalPrice - (discountCalc * p.FinalPrice);
+
+                    p.PriceDiscounted = discountedPriceProduct;
+                }
+
+                newPs.Add(p);
+            }
+
+            return newPs;             
         }
 
         public Discount AddProductToDiscount(string dName, string pName)
         {
             Discount discount = _dbContexet.Discount.Where(d => d.Name == dName).FirstOrDefault();
+
+            if (discount is null)
+            {
+                return new Discount();
+            }
+
             Product product = _dbContexet.Products.Where(p => p.Name == pName).FirstOrDefault();
 
             List<Product> ps = new List<Product>();
@@ -93,6 +124,8 @@ namespace WEBManagerZ.Services
 
             discount.Products = ps;
             product.Discount = discount;
+            decimal discountCalc = discount.Percent / 100;
+            product.PriceDiscounted = product.FinalPrice - (discountCalc * product.FinalPrice);
 
             _dbContexet.SaveChanges();
 

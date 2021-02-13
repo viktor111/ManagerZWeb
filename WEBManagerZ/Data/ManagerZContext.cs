@@ -74,7 +74,6 @@ namespace WEBManagerZ.Data
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasIndex(e => e.OrderId, "IX_Products_OrderId");
 
                 entity.Property(e => e.Picture).HasColumnType("varchar(max)");
 
@@ -86,7 +85,7 @@ namespace WEBManagerZ.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.CostToMake).HasColumnType("decimal(18, 3)");
-
+                
                 entity.Property(e => e.FinalPrice).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.Name)
@@ -140,6 +139,7 @@ namespace WEBManagerZ.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProduct { get; set; }
         public DbSet<Discount> Discount { get; set; }
+        public DbSet<News> News { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 

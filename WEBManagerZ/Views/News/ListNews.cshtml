@@ -1,0 +1,39 @@
+﻿@model List<News>
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Id
+            </th>
+            <th>
+                Text
+            </th>
+            <th>
+                Link
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Link)
+                </td>     
+                <td>
+                    <a asp-action="DeleteOne" asp-route-id="@item.Id" asp-controller="News">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

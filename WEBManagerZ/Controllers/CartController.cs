@@ -45,8 +45,8 @@ namespace WEBManagerZ.Controllers
 
             cartPageViewModel.CartPrice = cart.Price;
 
-            cartPageViewModel.CartQuantity = sumOfQuantity;
-            
+            cartPageViewModel.CartQuantity = sumOfQuantity;            
+
             CartItemViewModel model = new CartItemViewModel();
 
             return View(cartPageViewModel);

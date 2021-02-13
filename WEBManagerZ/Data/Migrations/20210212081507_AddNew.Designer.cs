@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBManagerZ.Data;
 
 namespace WEBManagerZ.Migrations
 {
     [DbContext(typeof(ManagerZContext))]
-    partial class ManagerZContextModelSnapshot : ModelSnapshot
+    [Migration("20210212081507_AddNew")]
+    partial class AddNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,30 +329,6 @@ namespace WEBManagerZ.Migrations
                     b.ToTable("Discount");
                 });
 
-            modelBuilder.Entity("WEBManagerZ.Models.News", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("News");
-                });
-
             modelBuilder.Entity("WEBManagerZ.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -409,9 +387,6 @@ namespace WEBManagerZ.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("AddedToCart")
-                        .HasColumnType("int");
-
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -436,18 +411,25 @@ namespace WEBManagerZ.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Picture")
                         .HasColumnType("varchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,3)");
 
-                    b.Property<int>("TimesSold")
-                        .HasColumnType("int");
+                    b.Property<decimal>("PriceDiscounted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,3)")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
                     b.HasIndex("DiscountId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -539,7 +521,13 @@ namespace WEBManagerZ.Migrations
                         .WithMany("Products")
                         .HasForeignKey("DiscountId");
 
+                    b.HasOne("WEBManagerZ.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Discount");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("WEBManagerZ.Models.Cart", b =>

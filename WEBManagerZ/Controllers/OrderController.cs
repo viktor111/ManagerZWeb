@@ -38,13 +38,10 @@ namespace WEBManagerZ.Controllers
 
             List<CartItemViewModel> cartViewModels = _sqlCart.GetProductsVM(cart);
 
-            decimal sumOfPrice = cartViewModels.Sum(p => p.Price);
-
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
 
-            ViewData["ProuctSumPrice"] = sumOfPrice;
-            ViewData["ProductCount"] = sumOfQuantity;            
-            ViewData["ProductCount"] = sumOfQuantity;            
+            ViewData["ProuctSumPrice"] = cart.Price;
+            ViewData["ProductCount"] = sumOfQuantity;               
 
             return View();
         }
@@ -66,9 +63,9 @@ namespace WEBManagerZ.Controllers
                 namesAndQuantity.Add(nameAndChar);
             }
 
-            decimal sumOfPrice = cartViewModels.Sum(p => p.Price);
             decimal sumOfSpent = cartViewModels.Sum(p => p.CostToMake);
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
+
 
             Order order = new Order();
 
@@ -84,7 +81,7 @@ namespace WEBManagerZ.Controllers
             order.Spent = sumOfSpent;
             order.ProductNames = string.Join(", ", namesAndQuantity);
 
-            _sqlOrder.SaveOrder(order);
+            _sqlOrder.SaveOrder(order, cart);
 
             _sqlCart.ClearCart(cart);
 

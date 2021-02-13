@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBManagerZ.Data;
 
 namespace WEBManagerZ.Migrations
 {
     [DbContext(typeof(ManagerZContext))]
-    partial class ManagerZContextModelSnapshot : ModelSnapshot
+    [Migration("20210212235009_TrackMoreProductInfo")]
+    partial class TrackMoreProductInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
