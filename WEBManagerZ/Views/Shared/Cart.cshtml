@@ -13,7 +13,7 @@
 
             <div class="text-center col-sm-12 col-md-12 col-lg-12">
                 <p>
-                    Price: @Model.CartPrice
+                    Price: @Model.CartPrice.ToString("N2")
                 </p>
                 <p>
                     Quantity: @Model.CartQuantity
@@ -48,12 +48,12 @@
                         @if (pvm.DiscountExists)
                         {
                         <th>
-                        Discounted Price: <span class="text-info">@pvm.PriceDiscounted</span>
+                        Discounted Price: <span class="text-info">@pvm.PriceDiscounted.ToString("N2")</span>
                         
                         </th>
                         }
                         <th>
-                            @pvm.Price
+                            @pvm.Price.ToString("N2")
                         </th>
                         <th>
                             @pvm.Quantity

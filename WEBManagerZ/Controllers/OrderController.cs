@@ -40,7 +40,7 @@ namespace WEBManagerZ.Controllers
 
             int sumOfQuantity = cartViewModels.Sum(p => p.Quantity);
 
-            ViewData["ProuctSumPrice"] = cart.Price;
+            ViewData["ProuctSumPrice"] = cart.Price.ToString("N2");
             ViewData["ProductCount"] = sumOfQuantity;               
 
             return View();
