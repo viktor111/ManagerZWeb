@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using WEBManagerZ.Models;
 using WEBManagerZ.Services;
@@ -17,8 +14,8 @@ namespace WEBManagerZ.Controllers
         private readonly ILogger<HomeController> _logger;
         private SqlCart _sqlCart;
         private UserManager<AppUser> _userManager;
-        private SqlDiscount _sqlDiscount;
-        private SqlNews _sqlNews;
+        private readonly SqlDiscount _sqlDiscount;
+        private readonly SqlNews _sqlNews;
 
         public HomeController(ILogger<HomeController> logger,
             SqlCart sqlCart,

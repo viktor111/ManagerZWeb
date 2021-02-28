@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WEBManagerZ.Data;
 using WEBManagerZ.Models;
 
@@ -9,8 +6,8 @@ namespace WEBManagerZ.Services
 {
     public class SqlOrder
     {
-        private ManagerZContext _dbContexet;
-        private SqlCart _sqlCart;
+        private readonly ManagerZContext _dbContexet;
+        private readonly SqlCart _sqlCart;
 
         public SqlOrder(ManagerZContext dbContext, SqlCart sqlCart)
         {

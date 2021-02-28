@@ -11,6 +11,23 @@
 
 
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Item added to cart!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                <a asp-controller="Cart" asp-action="Cart" class="btn btn-primary" >View cart</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row" style="margin-top: 20px">
     @foreach (var item in Model)
     {
@@ -31,14 +48,15 @@
         </ul>
         @if (SignInManager.IsSignedIn(User))
             {
-        <div class="card-body">
-            <a asp-action="AddToCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus" style="font-size: 2rem; color: cornflowerblue;"></i></a>
-        </div>
+                <div class="card-body">
+                     <!-- ToDo: display notification when cart added to product figure out how to do it after page refresh when product added to cart -->
+                    <a asp-action="AddToCart" asp-route-id="@item.Id"><i data-toggle="modal" data-target="#exampleModal" class="bi bi-cart-plus" style="font-size: 2rem; color: cornflowerblue;"></i></a>
+                </div>
             }
             else
             {
         <div class="card-body">
-            <a aasp-area="Identity" asp-page="/Account/Login">Login to order</a>
+            <a asp-area="Identity" asp-page="/Account/Login">Login to order</a>
         </div>
             }
         @if (this.User.IsInRole("Admin"))
@@ -46,11 +64,21 @@
         <div class="card-body">
             <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
             <a asp-action="AddDescription" asp-route-id="@item.Id">Add Description</a>
-            <a asp-action="AddDiscount" asp-controller="Admin" asp-route-id="@item.Id">Add Discount</a>
         </div>
             }
     </div>
     }
 
 </div>
+
+<script>
+    //alert("ww");
+    //document.getElementById("addCart").addEventListener("onclick", () => {
+    //    alert("Added to cart!")
+    //})
+
+    let notifyAdded = () => {
+        bootbox.alert("This is the default alert!");
+    }
+</script>
 

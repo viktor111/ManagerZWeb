@@ -9,7 +9,7 @@ namespace WEBManagerZ.Services
 {
     public class SqlNews
     {
-        private ManagerZContext _dbContexet;
+        private readonly ManagerZContext _dbContexet;
 
         public SqlNews(ManagerZContext dbContext)
         {
@@ -31,7 +31,7 @@ namespace WEBManagerZ.Services
 
         public News GetOne(int id)
         {
-            return _dbContexet.News.Where(n => n.Id == id).FirstOrDefault();
+            return _dbContexet.News.FirstOrDefault(n => n.Id == id);
         }
 
         public News DeleteOne(News news)

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +14,10 @@ namespace WEBManagerZ.Controllers
 
     public class AdminController : Controller
     {
-        private SqlProduct _sqlProduct;
-        private SqlCart _sqlCart;
-        public SqlDiscount _sqlDiscount;
-        private UserManager<AppUser> _userManager;
+        private readonly SqlProduct _sqlProduct;
+        private readonly SqlCart _sqlCart;
+        private readonly SqlDiscount _sqlDiscount;
+        private readonly UserManager<AppUser> _userManager;
 
         public AdminController(
             SqlProduct sqlProduct,

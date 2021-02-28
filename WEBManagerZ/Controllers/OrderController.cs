@@ -14,9 +14,9 @@ namespace WEBManagerZ.Controllers
     public class OrderController : Controller
     {
         private SqlProduct _sqlProduct;
-        private SqlCart _sqlCart;
-        private UserManager<AppUser> _userManager;
-        private SqlOrder _sqlOrder;
+        private readonly SqlCart _sqlCart;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SqlOrder _sqlOrder;
 
         public OrderController(SqlProduct sqlProduct,
             SqlCart sqlCart,

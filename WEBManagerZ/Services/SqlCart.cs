@@ -11,50 +11,51 @@ namespace WEBManagerZ.Services
 {
     public class SqlCart
     {
-        private ManagerZContext _dbContexet;
+        private readonly ManagerZContext _dbContext;
 
         public SqlCart(ManagerZContext dbContext)
         {
-            _dbContexet = dbContext;
+            _dbContext = dbContext;
         }
 
 
         public Cart AddProductToCart(Product product, Cart cart)
         {
 
-            var productDb = _dbContexet.Products.Where(cp => cp.Id == product.Id).Include(x => x.CartProduct).FirstOrDefault();
-            var cartProduct = productDb.CartProduct.Where(x => x.CartId == cart.Id).FirstOrDefault();
-
-            if (cartProduct != null)
+            var productDb = _dbContext.Products.Where(cp => cp.Id == product.Id).Include(x => x.CartProduct).FirstOrDefault();
+            if (productDb != null)
             {
-                //var quantityOfCart = _dbContexet.CartProduct.Where(cp => cp.CartId == cart.Id).FirstOrDefault().Quantity;
+                var cartProduct = productDb.CartProduct.FirstOrDefault(x => x.CartId == cart.Id);
 
-                cartProduct.Quantity = cartProduct.Quantity + 1;
-            }
-            else
-            {
-                productDb.CartProduct.Add(new CartProduct { CartId = cart.Id });
+                if (cartProduct != null)
+                {
+                    cartProduct.Quantity = cartProduct.Quantity + 1;
+                }
+                else
+                {
+                    productDb.CartProduct.Add(new CartProduct { CartId = cart.Id });
+                }
             }
 
-            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+            var dbCart = _dbContext.Carts.FirstOrDefault(c => c.Id == cart.Id);
 
             if (product.DiscountId is not null)
             {
-                Discount discount = _dbContexet.Discount.Where(d => d.Id == product.DiscountId).FirstOrDefault();
+                Discount discount = _dbContext.Discount.FirstOrDefault(d => d.Id == product.DiscountId);
 
                 decimal discountCalc = discount.Percent / 100;
                 decimal discountedPriceProduct = product.FinalPrice - (discountCalc * product.FinalPrice);
 
-                dbCart.Price += discountedPriceProduct;
+                if (dbCart is not null) dbCart.Price += discountedPriceProduct;
             }
             else
             {
-                dbCart.Price += product.FinalPrice;
+                if (dbCart is not null) dbCart.Price += product.FinalPrice;
             }
 
             product.AddedToCart++;
            
-            _dbContexet.SaveChanges();
+            _dbContext.SaveChanges();
             return cart;
         }
 
@@ -63,14 +64,14 @@ namespace WEBManagerZ.Services
             Cart cart = new();
             cart.User = user;
 
-            _dbContexet.Carts.Add(cart);
+            _dbContext.Carts.Add(cart);
 
             return new Cart();
         }
 
         public Cart GetCart(AppUser user)
         {
-            Cart cart = _dbContexet.Carts.Where(c => c.User == user).FirstOrDefault();
+            Cart cart = _dbContext.Carts.FirstOrDefault(c => c.User == user);
             if(user != null)
             {
                 if (cart.Price < 0)
@@ -79,26 +80,26 @@ namespace WEBManagerZ.Services
                 }
             }            
 
-            _dbContexet.SaveChanges();
+            _dbContext.SaveChanges();
 
             return cart;
         }
 
         public List<Product> Products(Cart cart)
         {
-            return _dbContexet.Carts.Where(p => p.Id == cart.Id).SelectMany(p => p.CartProduct).Select(p => p.Product).ToList();
+            return _dbContext.Carts.Where(p => p.Id == cart.Id).SelectMany(p => p.CartProduct).Select(p => p.Product).ToList();
         }
 
         public Cart ClearCart(Cart cart)
         {
-            var cartProduct = _dbContexet.CartProduct.Where(x => x.CartId == cart.Id).ToList();
-            var cartSql = _dbContexet.Carts.Where(c => c.Id == cart.Id).FirstOrDefault();
+            var cartProduct = _dbContext.CartProduct.Where(x => x.CartId == cart.Id).ToList();
+            var cartSql = _dbContext.Carts.FirstOrDefault(c => c.Id == cart.Id);
 
             cartSql.Price = 0;
 
-            _dbContexet.CartProduct.RemoveRange(cartProduct);
+            _dbContext.CartProduct.RemoveRange(cartProduct);
 
-            _dbContexet.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new Cart();
         }
@@ -107,7 +108,7 @@ namespace WEBManagerZ.Services
         {
             List<CartItemViewModel> viewModels = new List<CartItemViewModel>();
 
-            var productDb = _dbContexet.CartProduct.Where(cp => cp.CartId == cart.Id).ToList();
+            var productDb = _dbContext.CartProduct.Where(cp => cp.CartId == cart.Id).ToList();
 
             foreach(var smth in productDb)
             {
@@ -115,7 +116,7 @@ namespace WEBManagerZ.Services
                 int pId = smth.ProductId;
                 int quantity = smth.Quantity;
 
-                Product product = _dbContexet.Products.Where(p => p.Id == pId).FirstOrDefault();
+                Product product = _dbContext.Products.FirstOrDefault(p => p.Id == pId);
 
                 cvm.Price = product.FinalPrice;
                 cvm.Quantity = quantity;
@@ -124,7 +125,7 @@ namespace WEBManagerZ.Services
                 cvm.Id = product.Id;
                 if(product.DiscountId is not null)
                 {
-                    Discount discount = _dbContexet.Discount.Where(d => d.Id == product.DiscountId).FirstOrDefault();
+                    Discount discount = _dbContext.Discount.FirstOrDefault(d => d.Id == product.DiscountId);
                     cvm.Discount = discount;
                     decimal discountCalc = discount.Percent / 100;
 
@@ -139,15 +140,15 @@ namespace WEBManagerZ.Services
 
         public CartProduct AddQuantity(Product product, Cart cart)
         {
-            CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == product.Id).FirstOrDefault();
+            CartProduct p = _dbContext.CartProduct.FirstOrDefault(p => p.ProductId == product.Id);
 
             p.Quantity += 1;
             
-            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+            var dbCart = _dbContext.Carts.FirstOrDefault(c => c.Id == cart.Id);
 
             if (product.DiscountId is not null)
             {
-                Discount discount = _dbContexet.Discount.Where(d => d.Id == product.DiscountId).FirstOrDefault();
+                Discount discount = _dbContext.Discount.FirstOrDefault(d => d.Id == product.DiscountId);
 
                 decimal discountCalc = discount.Percent / 100;
                 decimal discountedPriceProduct = product.FinalPrice - (discountCalc * product.FinalPrice);
@@ -159,18 +160,18 @@ namespace WEBManagerZ.Services
                 dbCart.Price += product.FinalPrice;
             }
 
-            _dbContexet.SaveChanges();
+            _dbContext.SaveChanges();
 
             return p;
         }
 
         public CartProduct DeleteProductFromCart(Product product, Cart cart)
         {
-            CartProduct p = _dbContexet.CartProduct.Where(p => p.ProductId == product.Id).FirstOrDefault();
+            CartProduct p = _dbContext.CartProduct.FirstOrDefault(p => p.ProductId == product.Id);
 
             if(p.Quantity == 1)
             {
-                _dbContexet.CartProduct.Remove(p);
+                _dbContext.CartProduct.Remove(p);
 
                 p.Quantity = p.Quantity - 1;
             }
@@ -179,11 +180,11 @@ namespace WEBManagerZ.Services
                 p.Quantity = p.Quantity - 1;
             }
 
-            var dbCart = _dbContexet.Carts.FirstOrDefault(c => c.Id == cart.Id);
+            var dbCart = _dbContext.Carts.FirstOrDefault(c => c.Id == cart.Id);
 
             if (product.DiscountId is not null)
             {
-                Discount discount = _dbContexet.Discount.Where(d => d.Id == product.DiscountId).FirstOrDefault();
+                Discount discount = _dbContext.Discount.FirstOrDefault(d => d.Id == product.DiscountId);
 
                 decimal discountCalc = discount.Percent / 100;
                 decimal discountedPriceProduct = product.FinalPrice - (discountCalc * product.FinalPrice);
@@ -195,7 +196,7 @@ namespace WEBManagerZ.Services
                 dbCart.Price -= product.FinalPrice;
             }
 
-            _dbContexet.SaveChanges();
+            _dbContext.SaveChanges();
 
             return p;
         }

@@ -24,26 +24,6 @@
                     <li class="list-group-item">Discounted Price: @item.PriceDiscounted</li>
                 }
             </ul>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <div class="card-body">
-                    <a asp-action="AddToCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus" style="font-size: 2rem; color: cornflowerblue;"></i></a>
-                </div>
-            }
-            else
-            {
-                <div class="card-body">
-                    <a aasp-area="Identity" asp-page="/Account/Login">Login to order</a>
-                </div>
-            }
-            @if (this.User.IsInRole("Admin"))
-            {
-                <div class="card-body">
-                    <a asp-action="AddPicture" asp-route-id="@item.Id">Add Picture</a>
-                    <a asp-action="AddDescription" asp-route-id="@item.Id">Add Description</a>
-                    <a asp-action="AddDiscount" asp-controller="Admin" asp-route-id="@item.Id">Add Discount</a>
-                </div>
-            }
         </div>
     }
 

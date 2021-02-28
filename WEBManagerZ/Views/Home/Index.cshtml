@@ -13,7 +13,7 @@
         <div class="carousel-inner">
 
              <div class="carousel-item active">
-                <img style="width: 100% !important" class="d-block w-10" src="~/images/pexels-photo-4473400.jpeg" alt="...">
+                <img style="width: 1000px; height: 500px" class="d-block w-10" src="~/images/pexels-photo-4473400.jpeg" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>We are open untill 18 but you can still make orders for the next day.</h5>
                 </div>
@@ -22,8 +22,8 @@
             @foreach (var d in Model.Discounts)
             {
                 <div class="carousel-item">
-                    <a asp-controller="Admin" asp-action="DiscountProducts" asp-route-id="@d.Id">
-                    <img style="width: 100%" src="~/images/istockphoto-854550186-170667a.jpg" alt="Discount @d.Percent">
+                    <a asp-controller="Admin" asp-action="DiscountProducts" asp-route-id="@d.Id" >
+                    <img style="width: 1000px; height: 500px" src="~/images/istockphoto-854550186-170667a.jpg" alt="Discount @d.Percent">
                     </a>                    
                     <div class="carousel-caption d-none d-md-block">
                         <h5>@d.Percent%</h5>
@@ -35,7 +35,7 @@
             @foreach (var n in Model.News)
             {
                 <div class="carousel-item">
-                    <img style="width: 100%" src="~/images/@n.Picture" alt="...">
+                    <img style="width: 1000px; height: 500px" src="~/images/@n.Picture" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>@n.Text</h5>
                         <i>@n.Date</i>

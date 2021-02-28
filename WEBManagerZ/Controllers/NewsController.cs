@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using WEBManagerZ.Models;
 using WEBManagerZ.Services;
 
@@ -16,18 +14,24 @@ namespace WEBManagerZ.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private SqlProduct _sqlProduct;
         private SqlCart _sqlCart;
-        private SqlNews _sqlNews;
+        private readonly SqlNews _sqlNews;
         private UserManager<AppUser> _userManager;
 
-        public NewsController(SqlProduct sqlProdut, SqlCart sqlCart, SqlNews sqlNews, UserManager<AppUser> userManager)
+        public NewsController
+            (
+            SqlProduct sqlProdut, 
+            SqlCart sqlCart, 
+            SqlNews sqlNews,
+            UserManager<AppUser> userManager, 
+            IWebHostEnvironment webHostEnvironment
+            )
         {
             _sqlProduct = sqlProdut;
             _sqlCart = sqlCart;
             _sqlNews = sqlNews;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
-
-        public SqlProduct SqlProdut { get; }
 
         [HttpGet]
         public IActionResult Create()

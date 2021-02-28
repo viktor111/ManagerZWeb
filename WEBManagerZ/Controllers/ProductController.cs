@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using WEBManagerZ.Models;
 using WEBManagerZ.Services;
@@ -17,9 +14,9 @@ namespace WEBManagerZ.Controllers
 {
     public class ProductController : Controller
     {
-        private SqlProduct _sqlProduct;
-        private SqlCart _sqlCart;
-        private UserManager<AppUser> _userManager;
+        private readonly SqlProduct _sqlProduct;
+        private readonly SqlCart _sqlCart;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductController(SqlProduct sqlProduct, 
@@ -32,11 +29,6 @@ namespace WEBManagerZ.Controllers
             _sqlCart = sqlCart;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         public IActionResult GetAllProducts()

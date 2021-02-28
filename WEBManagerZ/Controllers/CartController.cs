@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +12,9 @@ namespace WEBManagerZ.Controllers
     public class CartController : Controller
     {
 
-        private SqlProduct _sqlProduct;
-        private SqlCart _sqlCart;
-        private UserManager<AppUser> _userManager;
+        private readonly SqlProduct _sqlProduct;
+        private readonly SqlCart _sqlCart;
+        private readonly UserManager<AppUser> _userManager;
 
         public CartController(SqlProduct sqlProduct,
             SqlCart sqlCart,
